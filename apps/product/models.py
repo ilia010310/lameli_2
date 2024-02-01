@@ -1,6 +1,7 @@
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.urls import reverse
+from mptt.models import MPTTModel, TreeForeignKey
 
 
 class Product(models.Model):
@@ -19,10 +20,12 @@ class Product(models.Model):
                                       FileExtensionValidator(allowed_extensions=('png', 'jpg', 'webp', 'jpeg', 'gif'))]
                                   )
     description = models.TextField(verbose_name='Описание')
+    category = TreeForeignKey('Category', on_delete=models.PROTECT,
+                              related_name='products', verbose_name='Категория', default=False)
     status = models.CharField(choices=STATUS_OPTIONS, default='YES', verbose_name='Статус товара', max_length=10)
-    quantity = models.PositiveIntegerField(blank=True, null=True, verbose_name='Колличество')
     price = models.DecimalField(default=1990, verbose_name='Цена', decimal_places=0, max_digits=8)
     publish = models.DateTimeField(auto_now_add=True)
+
 
 
     def get_absolute_url(self):
@@ -37,4 +40,40 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+class Category(MPTTModel):
+    """
+    Модель категорий с вложенностью
+    """
+    title = models.CharField(max_length=255, verbose_name='Название категории')
+    slug = models.SlugField(max_length=255, verbose_name='URL категории', blank=True)
+    parent = TreeForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        db_index=True,
+        related_name='children',
+        verbose_name='Родительская категория'
+    )
+
+    class MPTTMeta:
+        """
+        Сортировка по вложенности
+        """
+        order_insertion_by = ('title',)
+
+    class Meta:
+        """
+        Сортировка, название модели в админ панели, таблица в данными
+        """
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+        db_table = 'app_categories'
+
+    def __str__(self):
+        """
+        Возвращение заголовка статьи
+        """
+        return self.title
 

@@ -1,4 +1,13 @@
 from django.contrib import admin
-from .models import Product
+from django_mptt_admin.admin import DjangoMpttAdmin
+from .models import Product, Category
+
+
+@admin.register(Category)
+class CategoryAdmin(DjangoMpttAdmin):
+    """
+    Админ-панель модели категорий
+    """
+    prepopulated_fields = {'slug': ('title',)}
 
 admin.site.register(Product)

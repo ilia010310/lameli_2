@@ -26,6 +26,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apps.product.apps.ProductConfig',
+    'mptt',
+    'django_mptt_admin',
 ]
 
 MIDDLEWARE = [
