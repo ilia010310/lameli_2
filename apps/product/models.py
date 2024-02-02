@@ -3,6 +3,8 @@ from django.db import models
 from django.urls import reverse
 from mptt.models import MPTTModel, TreeForeignKey
 
+from apps.service.utils import unique_slugify
+
 
 class Product(models.Model):
     STATUS_OPTIONS = (
@@ -11,13 +13,12 @@ class Product(models.Model):
     )
 
     name = models.CharField(max_length=55, verbose_name='Название')
-    slug = models.SlugField(max_length=55, verbose_name='Артикул', unique=True)
+    slug = models.SlugField(verbose_name='Артикул', max_length=255, blank=True)
     avatar = models.ImageField(default='default.png',
                                   verbose_name='Главная фотография',
-                                  blank=True,
                                   upload_to='images/avatars/',
                                   validators=[
-                                      FileExtensionValidator(allowed_extensions=('png', 'jpg', 'webp', 'jpeg', 'gif'))]
+                                      FileExtensionValidator(allowed_extensions=('png', 'jpg', 'webp', 'jpeg', 'gif', 'webp'))]
                                   )
     description = models.TextField(verbose_name='Описание')
     category = TreeForeignKey('Category', on_delete=models.PROTECT,
@@ -26,10 +27,15 @@ class Product(models.Model):
     price = models.DecimalField(default=1990, verbose_name='Цена', decimal_places=0, max_digits=8)
     publish = models.DateTimeField(auto_now_add=True)
 
-
+    def save(self, *args, **kwargs):
+        """
+        Сохранение полей модели при их отсутствии заполнения
+        """
+        self.slug = unique_slugify(self, self.name)
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('product:product_detail', args=[self.slug])
+        return reverse('product_detail', args=[self.slug])
 
     class Meta:
         verbose_name = 'Товары'

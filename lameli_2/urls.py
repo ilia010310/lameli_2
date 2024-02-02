@@ -5,7 +5,7 @@ from lameli_2 import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-     path('', include('apps.product.urls')),
+    path('', include('apps.product.urls')),
 ]
 
 if settings.DEBUG:

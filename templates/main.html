@@ -16,18 +16,17 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-8 p-4">
-        {% include 'includes/messages.html' %}
+
             {% block content %}
             {% endblock %}
-            {% include 'pagination.html' %}
+
         </div>
         <div class="col-4 p-4">
-            {% include 'sidebar.html' %}
+             {% include 'sidebar.html' %}
         </div>
     </div>
 </div>
 {% include 'footer.html' %}
-<script src="{% static 'backend.js' %}"></script>
 {% block script %}{% endblock %}
 </body>
 </html>

@@ -1,0 +1,10 @@
+{% extends 'main.html' %}
+
+{% block content %}
+        <img src={{ product.avatar.url }} alt={{ product.name }} width="250"/>
+        <strong>{{ product.name }}</strong>
+        <p>{{ product.description }}</p>
+        <small>{{ product.create }}</small>
+        <hr>
+        <span>{{ product.category.title }}</span>
+{% endblock %}
