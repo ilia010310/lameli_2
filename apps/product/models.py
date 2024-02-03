@@ -6,6 +6,13 @@ from mptt.models import MPTTModel, TreeForeignKey
 from apps.service.utils import unique_slugify
 
 
+class ProductManager(models.Manager):
+    """
+    Кастомный менеджер для модели товаров
+    """
+
+    def all(self):
+        return self.get_queryset().select_related('category').filter(status='YES')
 class Product(models.Model):
     STATUS_OPTIONS = (
         ('YES', 'В наличии'),
@@ -26,6 +33,8 @@ class Product(models.Model):
     status = models.CharField(choices=STATUS_OPTIONS, default='YES', verbose_name='Статус товара', max_length=10)
     price = models.DecimalField(default=1990, verbose_name='Цена', decimal_places=0, max_digits=8)
     publish = models.DateTimeField(auto_now_add=True)
+    objects = models.Manager()
+    custom = ProductManager()
 
     def save(self, *args, **kwargs):
         """
@@ -82,4 +91,10 @@ class Category(MPTTModel):
         Возвращение заголовка статьи
         """
         return self.title
+
+    def get_absolute_url(self):
+        """
+        Получаем прямую ссылку на категорию
+        """
+        return reverse('product_by_category', kwargs={'slug': self.slug})
 

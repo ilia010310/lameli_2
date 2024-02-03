@@ -1,0 +1,38 @@
+.social-links img {
+    width: 20px; /* Регулируйте размер иконок здесь */
+    height: 20px;
+    margin: 0 5px; /* Расстояние между иконками */
+}
+
+.author {
+    margin-right: 20px;
+    color: rgb(255, 255, 255);
+}
+
+body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container-main {
+            flex: 1;
+        }
+
+.container-footer {
+        text-align: center; /* Центрирование содержимого по горизонтали */
+        display: flex;
+        justify-content: center; /* Центрирование по горизонтали */
+        height: 6vh; /* 6% высоты экрана */
+    }
+
+.body .container {
+    width: 100%;
+    margin-right: 2px;
+    margin-left: 2px;
+    max-width: 100%;
+}
+
+.row {
+    max-width: 100%;
+}
