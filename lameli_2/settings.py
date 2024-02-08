@@ -9,7 +9,7 @@ CART_SESSION_ID = 'apps.cart'
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-nnshy%n%&p+v)ji&ps^ni$5o$1#t4rk$5ij@nxje$=qva$l+#v'
+SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -20,6 +20,8 @@ ALLOWED_HOSTS = []
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
+SITE_ID = 1
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -34,6 +36,8 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django.contrib.humanize',
     'apps.order.apps.OrderConfig',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
 ]
 
 MIDDLEWARE = [

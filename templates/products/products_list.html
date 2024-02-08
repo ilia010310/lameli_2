@@ -11,9 +11,17 @@
                             <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
                         </h5>
                         <p class="card-text">{{ product.description }}</p>
-                        <small>Категория:
-                            <a href="{{ product.category.get_absolute_url }}">{{ product.category.title }}</a>
-                        </small>
+                        <form class="d-flex" action="{% url 'cart:cart_add' product.id %}" method="post">
+                            <div class="flex-grow-1 me-2" style="max-width: 50px;">
+                                <input type="text" class="form-control" id="{{ cart_product_form.quantity.id_for_label }}"
+                                       name="{{ cart_product_form.quantity.name }}"
+                                       value="{{ cart_product_form.quantity.value }}" placeholder="1">
+                                {% csrf_token %}
+                            </div>
+                            <div class="col-md-1">
+                                <button type="submit" class="btn btn-primary btn-sm">В корзину</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

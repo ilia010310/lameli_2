@@ -33,6 +33,7 @@ class Product(models.Model):
     status = models.CharField(choices=STATUS_OPTIONS, default='YES', verbose_name='Статус товара', max_length=10)
     price = models.DecimalField(default=1990, verbose_name='Цена', decimal_places=0, max_digits=8)
     publish = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now_add=False, auto_now=True)
     objects = models.Manager()
     custom = ProductManager()
 
