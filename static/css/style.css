@@ -1,38 +1,68 @@
-.social-links img {
-    width: 20px; /* Регулируйте размер иконок здесь */
-    height: 20px;
-    margin: 0 5px; /* Расстояние между иконками */
+html, body {
+    height: 100%;
+    max-height: 100%;
+    font-family: 'Roboto', sans-serif;
+    overflow-x: hidden;
+    position: relative;
 }
-
-.author {
-    margin-right: 20px;
-    color: rgb(255, 255, 255);
-}
-
-body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        .container-main {
-            flex: 1;
-        }
 
 .container-footer {
-        text-align: center; /* Центрирование содержимого по горизонтали */
-        display: flex;
-        justify-content: center; /* Центрирование по горизонтали */
-        height: 6vh; /* 6% высоты экрана */
-    }
-
-.body .container {
-    width: 100%;
-    margin-right: 2px;
-    margin-left: 2px;
-    max-width: 100%;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    text-align: center; /* Центрирование содержимого по горизонтали */
+    display: flex;
+    justify-content: center; /* Центрирование по горизонтали */
+    height: 10vh; /* 6% высоты экрана */
+    position: absolute; /* Фиксированное позиционирование */
+    bottom: 0; /* Прижатие к нижнему краю */
+    left: 0;
+    width: 100%; /* Растянуть на всю ширину */
+    background-color: #000001; /* Цвет фона */
+    padding: 10px; /* Отступы */
+    box-sizing: border-box; /* Учитываем отступы и границы в размере элемента */
 }
 
 .row {
-    max-width: 100%;
+    min-width: 100%;
+}
+
+.author {
+    margin-top: 16px;
+    margin-right: 20px;
+    justify-content: center;
+    display: flex;
+    text-align: center;
+    align-items: center;
+}
+
+.container-footer .social-links img {
+    width: 20px;
+    height: 20px;
+    margin: 0 5px;
+}
+
+.product-item {
+    height: 410px;
+    background-color: white;
+    border: 0.4px solid black;
+    position: relative;
+    padding: 10px 0 10px 0;
+    text-align: center;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.add-to-card-btn {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.product-image-item {
+    height = 20%;
+    padding: 5px;
+    margin-bottom: 3px;
 }

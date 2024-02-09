@@ -1,7 +1,9 @@
 {% load mptt_tags %}
 
 <div class="card mb-4">
+    <a href="/">
     <div class="card-header">Категории</div>
+    </a>
     <div class="card-body ">
         {% full_tree_for_model product.Category as categories %}
         <ul>
