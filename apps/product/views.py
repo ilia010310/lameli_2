@@ -1,9 +1,11 @@
 from django.views.generic import ListView, DetailView
 from .models import Product, Category
+from ..cart.forms import CartAddProductForm
 
 
 class ProductListView(ListView):
     model = Product
+    cart_item_form = CartAddProductForm()
     template_name = 'products/products_list.html'
     context_object_name = 'products'
     paginate_by = 16
@@ -13,6 +15,7 @@ class ProductListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Главная страница'
+        context['cart_item_form'] = self.cart_item_form
         return context
 
 class ProductDetailView(DetailView):

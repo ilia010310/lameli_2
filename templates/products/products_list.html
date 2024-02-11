@@ -19,12 +19,16 @@
                             Цена: {{  product.price }} руб.
                         </p>
                         </div>
-                        <div class="container mt-5">
+                        <div class="container mt-2">
                             <div class="row justify-content-center">
-                                <div class="col-md-1">
+                                <div class="col-md-6">
                                     <form class="d-flex" action="{% url 'cart:cart_add' product.id %}" method="post">
-                                        <div class="flex-grow-2 me-2">
-                                             <input type="text" class="form-control" id="{{ cart_item_form.quantity.id_for_label }}" name="{{ cart_item_form.quantity.name }}" value="{{ cart_item_form.quantity.value }}" placeholder="0">
+                                        <div class="flex-grow-1 me-2">
+                                             <input type="text" class="form-control"
+                                                    id="{{ cart_item_form.quantity.id_for_label }}"
+                                                    name="{{ cart_item_form.quantity.name }}"
+                                                    value="{{ cart_item_form.quantity.value }}"
+                                                    placeholder="1">
                                             {% csrf_token %}
                                         </div>
 

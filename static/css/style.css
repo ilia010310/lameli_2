@@ -3,8 +3,10 @@ html, body {
     max-height: 100%;
     font-family: 'Roboto', sans-serif;
     overflow-x: hidden;
-    position: relative;
+    padding-bottom: 0px;
+
 }
+
 
 .container-footer {
     color: white;
@@ -13,14 +15,13 @@ html, body {
     text-align: center; /* Центрирование содержимого по горизонтали */
     display: flex;
     justify-content: center; /* Центрирование по горизонтали */
-    height: 10vh; /* 6% высоты экрана */
-    position: absolute; /* Фиксированное позиционирование */
+    height: 90px; /* 6% высоты экрана */
+    position: relative; /* Фиксированное позиционирование */
     bottom: 0; /* Прижатие к нижнему краю */
     left: 0;
     width: 100%; /* Растянуть на всю ширину */
     background-color: #000001; /* Цвет фона */
-    padding: 10px; /* Отступы */
-    box-sizing: border-box; /* Учитываем отступы и границы в размере элемента */
+
 }
 
 .row {
@@ -54,12 +55,7 @@ html, body {
     overflow: hidden;
 }
 
-.add-to-card-btn {
-    position: absolute;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-}
+
 
 .product-image-item {
     height = 20%;
