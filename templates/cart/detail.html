@@ -2,9 +2,6 @@
 {% load static %}
 {% load humanize %}
 
-{% block title %}
-  Корзина покупок
-{% endblock %}
 
 {% block content %}
  <div class="container mt-5">
@@ -48,7 +45,7 @@
 </td>
 
         <td>{{ product.price|intcomma }} руб.</td>
-        <td>{{ product.total_price|intcomma }} руб.</td>
+        <td>{{ item.total_price|intcomma }} руб.</td>
         <td>
             <a href="{% url 'cart:cart_remove' product.id %}" class="btn btn-danger btn-sm">Удалить</a>
 
