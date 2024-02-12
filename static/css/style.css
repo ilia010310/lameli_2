@@ -3,25 +3,13 @@ html, body {
     max-height: 100%;
     font-family: 'Roboto', sans-serif;
     overflow-x: hidden;
-    padding-bottom: 0px;
+
 
 }
 
 
-.container-footer {
-    color: white;
-    justify-content: center;
-    align-items: center;
-    text-align: center; /* Центрирование содержимого по горизонтали */
-    display: flex;
-    justify-content: center; /* Центрирование по горизонтали */
-    height: 90px; /* 6% высоты экрана */
-    position: relative; /* Фиксированное позиционирование */
-    bottom: 0; /* Прижатие к нижнему краю */
-    left: 0;
-    width: 100%; /* Растянуть на всю ширину */
-    background-color: #000001; /* Цвет фона */
-
+footer {
+    text-align: center;
 }
 
 .row {
@@ -37,10 +25,11 @@ html, body {
     align-items: center;
 }
 
-.container-footer .social-links img {
+.social-links img {
     width: 20px;
     height: 20px;
     margin: 0 5px;
+    margin-bottom: 10px;
 }
 
 .product-item {
