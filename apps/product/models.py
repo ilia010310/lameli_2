@@ -2,7 +2,6 @@ from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.urls import reverse
 from mptt.models import MPTTModel, TreeForeignKey
-
 from apps.service.utils import unique_slugify
 
 
@@ -29,7 +28,7 @@ class Product(models.Model):
                                   )
     description = models.TextField(verbose_name='Описание')
     category = TreeForeignKey('Category', on_delete=models.PROTECT,
-                              related_name='products', verbose_name='Категория', default=False)
+                              related_name='products', verbose_name='Категория', default=1)
     status = models.CharField(choices=STATUS_OPTIONS, default='YES', verbose_name='Статус товара', max_length=10)
     price = models.DecimalField(default=1990, verbose_name='Цена', decimal_places=0, max_digits=8)
     publish = models.DateTimeField(auto_now_add=True)
