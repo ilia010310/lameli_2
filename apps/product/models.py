@@ -3,6 +3,9 @@ from django.db import models
 from django.urls import reverse
 from mptt.models import MPTTModel, TreeForeignKey
 from apps.service.utils import unique_slugify
+from apps.product.tasks import process_image
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class ProductManager(models.Manager):
@@ -97,4 +100,15 @@ class Category(MPTTModel):
         Получаем прямую ссылку на категорию
         """
         return reverse('product_by_category', kwargs={'slug': self.slug})
+
+@receiver(post_save, sender=Product)
+def product_post_save(sender, instance, signal, *args, **kwargs):
+    delay_seconds = 8
+    print(str(instance.avatar.url))
+    process_image.apply_async(args=[instance.avatar.url[1:]
+], countdown=delay_seconds)
+
+
+
+
 
