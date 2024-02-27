@@ -13,9 +13,11 @@ def process_image(image_path):
     if os.path.exists(abs_image_path):
         try:
             with Image.open(abs_image_path) as img:
-                # Изменение размера изображения
-                new_img = img.crop((0,0,img.width,img.width)).resize((200, 200)).transpose(Image.FLIP_LEFT_RIGHT)
-                new_img.save(abs_image_path)
+                if img.width == 200 and img.height == 200:
+                    pass
+                else:
+                    new_img = img.crop((0,0,img.width,img.width)).resize((200, 200)).transpose(Image.FLIP_LEFT_RIGHT)
+                    new_img.save(abs_image_path)
         except Exception as e:
             print(f"An error occurred: {e}")
     else:

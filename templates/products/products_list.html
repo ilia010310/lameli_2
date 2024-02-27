@@ -1,6 +1,9 @@
 {% extends 'main.html' %}
 {% load static %}
 {% block content %}
+  <h1 class="mb-4">Каталог продукции</h1>
+
+
     <div class="row">
         {% for product in products %}
             <div class="col-lg-3">
@@ -19,9 +22,9 @@
                             Цена: {{  product.price }} руб.
                         </p>
                         </div>
-                        <div class="container mt-2">
-                            <div class="">
-                                <div class="col-md-8">
+                        <div class="container mt-1">
+                            <div class="row justify">
+                                <div class="col-md-6">
                                     <form class="d-flex" action="{% url 'cart:cart_add' product.id %}" method="post">
                                         <div class="flex-grow-1 me-2">
                                              <input type="text" class="form-control"
@@ -32,12 +35,13 @@
                                             {% csrf_token %}
                                         </div>
 
-                                        <div class="col-md-2">
-                                            <button type="submit" class="btn btn-primary btn-sm">В корзину</button>
+                                </div>
+                                <div class="col-md-6">
+                                            <button type="submit" class="btn btn-primary btn-sm btn-warning">В корзину</button>
                                         </div>
                                     </form>
-                                </div>
                             </div>
+
                         </div>
                     </div>
                 </div>

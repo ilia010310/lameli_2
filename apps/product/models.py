@@ -21,7 +21,7 @@ class Product(models.Model):
         ('NO', 'Скоро на складе')
     )
 
-    name = models.CharField(max_length=55, verbose_name='Название')
+    name = models.CharField(max_length=46, verbose_name='Название')
     slug = models.SlugField(verbose_name='Артикул', max_length=255, blank=True)
     avatar = models.ImageField(default='default.png',
                                   verbose_name='Главная фотография',
@@ -103,8 +103,7 @@ class Category(MPTTModel):
 
 @receiver(post_save, sender=Product)
 def product_post_save(sender, instance, signal, *args, **kwargs):
-    delay_seconds = 8
-    print(str(instance.avatar.url))
+    delay_seconds = 0.1
     process_image.apply_async(args=[instance.avatar.url[1:]
 ], countdown=delay_seconds)
 

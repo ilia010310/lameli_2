@@ -3,8 +3,28 @@ html, body {
     max-height: 100%;
     font-family: 'Roboto', sans-serif;
     overflow-x: hidden;
+}
+navbar-brand {
+    color: black;
+}
 
+a {
+    color: black;
+    text-decoration: none;
+}
 
+.form-control {
+    height: 30px; /* Установите желаемую высоту */
+}
+
+.col-lg-3 {
+    padding: 1%;
+}
+
+.price{
+    text-align: left;
+    margin-left: 5%;
+    margin-bottom: 1%
 }
 
 
@@ -35,11 +55,11 @@ footer {
 .product-item {
     height: 410px;
     background-color: white;
-    border: 0.4px solid black;
+    /*border: 0.4px solid black;*/
     position: relative;
     padding: 10px 0 10px 0;
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     border-radius: 20px;
     overflow: hidden;
 }
