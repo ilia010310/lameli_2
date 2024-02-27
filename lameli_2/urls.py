@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
+
 from apps.product.sitemaps import ProductSitemap
 from lameli_2 import settings
 
@@ -11,6 +13,8 @@ sitemaps = {
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('about_us/', TemplateView.as_view(template_name='products/about_us.html'),
+            name='about_us'),
     path('cart/', include('apps.cart.urls', namespace='cart')),
     path('order/', include('apps.order.urls', namespace='order')),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps},

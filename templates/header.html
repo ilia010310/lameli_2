@@ -1,19 +1,19 @@
-<nav class="navbar navbar-light" style="background-color: #f3d110;">
-  <a class="navbar-brand ms-3" href="/">Mr Vidergold</a>
-
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffe119;">
+  <a class="navbar-brand ms-4" href="/"><img src="/media/icons/ava.jpg"
+                                             alt="Logo" width="128" height="36"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/">Каталог товаров</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Features</a>
+        <a class="nav-link" href="{% url 'about_us' %}">О компании</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Pricing</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
+        <a class="nav-link" href="#">Контакты</a>
       </li>
     </ul>
   </div>
