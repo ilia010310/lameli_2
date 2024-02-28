@@ -3,7 +3,7 @@ from django.db import models
 from django.urls import reverse
 from mptt.models import MPTTModel, TreeForeignKey
 from apps.service.utils import unique_slugify
-from apps.product.tasks import process_image
+from apps.product.tasks import process_image_avatar, process_image_regular
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -104,7 +104,22 @@ class Category(MPTTModel):
 @receiver(post_save, sender=Product)
 def product_post_save(sender, instance, signal, *args, **kwargs):
     delay_seconds = 0.1
-    process_image.apply_async(args=[instance.avatar.url[1:]
+    process_image_avatar.apply_async(args=[instance.avatar.url[1:]
+], countdown=delay_seconds)
+
+class ProductImages(models.Model):
+    product = models.ForeignKey(Product,
+                                blank=True,
+                                null=True, default=None,
+                                on_delete=models.CASCADE,
+                                related_name='images')
+    image = models.ImageField(upload_to='item_images/',
+                              verbose_name='Картинка')
+
+@receiver(post_save, sender=ProductImages)
+def product_post_save(sender, instance, signal, *args, **kwargs):
+    delay_seconds = 0.1
+    process_image_regular.apply_async(args=[instance.image.url[1:]
 ], countdown=delay_seconds)
 
 
