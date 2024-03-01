@@ -9,7 +9,7 @@ class ProductListView(ListView):
     cart_item_form = CartAddProductForm()
     template_name = 'products/products_list.html'
     context_object_name = 'products'
-    paginate_by = 16
+    paginate_by = 12
     queryset = Product.custom.all()
 
 
@@ -39,7 +39,7 @@ class ProductFromCategory(ListView):
     context_object_name = 'products'
     cart_item_form = CartAddProductForm()
     category = None
-    paginate_by = 1
+    paginate_by = 12
     queryset = Product.custom.all()
 
     def get_queryset(self):

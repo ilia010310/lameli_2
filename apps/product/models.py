@@ -12,7 +12,6 @@ class ProductManager(models.Manager):
     """
     Кастомный менеджер для модели товаров
     """
-
     def all(self):
         return self.get_queryset().select_related('category').filter(status='YES')
 class Product(models.Model):
