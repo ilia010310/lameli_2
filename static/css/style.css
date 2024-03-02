@@ -23,7 +23,9 @@ a {
 
 .col-lg-3 {
     padding: 1%;
+    height: auto;
 }
+
 
 .price{
     text-align: left;
@@ -57,7 +59,8 @@ footer {
 }
 
 .product-item {
-    height: 410px;
+    min-height: 400px;
+    height: auto;
     background-color: white;
     /*border: 0.4px solid black;*/
     position: relative;
