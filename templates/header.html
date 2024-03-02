@@ -1,20 +1,43 @@
+{% load static %}
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffe119;">
-  <a class="navbar-brand ms-4" href="/"><img src="/media/icons/ava.jpg"
-                                             alt="Logo" width="128" height="36"></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="/">Каталог товаров</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'about_us' %}">О компании</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Контакты</a>
-      </li>
-    </ul>
-  </div>
+    <a class="navbar-brand ms-4" href="/"><img src="/media/icons/ava.jpg"
+                                               alt="Logo" width="128" height="36"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div>
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Каталог товаров</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'about_us' %}">О компании</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Контакты</a>
+            </li>
+        </ul>
+
+    </div>
+
+    <div class="cart-nav" style="position: absolute;
+        right: 10%; display: flex; padding: 13px 15px;
+        justify-content: space-evenly; cursor: pointer; width: 180px;">
+        <a href="/cart/">
+            <div class="icon">
+                <i class="fas fa-shopping-cart"></i>
+                <img src="/media/icons/basket.png" style="weight: 20px; height: 20px">
+                <span>Корзина</span>
+            </div>
+        </a>
+        <div class="item-count" style="width: 23px;
+            height: 23px; border-radius: 50%;
+            background: white; font-size: 15px; text-align: center;
+            line-height: 24px;">
+            {{ cart_count }}
+        </div>
+
+    </div>
+
 </nav>

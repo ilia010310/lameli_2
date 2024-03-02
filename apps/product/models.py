@@ -18,8 +18,11 @@ class ProductManager(models.Manager):
     """
     Кастомный менеджер для модели товаров
     """
+
     def all(self):
         return self.get_queryset().select_related('category').filter(status='YES')
+
+
 class Product(models.Model):
     STATUS_OPTIONS = (
         ('YES', 'В наличии'),
@@ -29,11 +32,12 @@ class Product(models.Model):
     name = models.CharField(max_length=46, verbose_name='Название')
     slug = models.SlugField(verbose_name='Артикул', max_length=255, blank=True)
     avatar = models.ImageField(default='default.png',
-                                  verbose_name='Главная фотография',
-                                  upload_to='images/avatars/',
-                                  validators=[
-                                      FileExtensionValidator(allowed_extensions=('png', 'jpg', 'webp', 'jpeg', 'gif', 'webp'))]
-                                  )
+                               verbose_name='Главная фотография',
+                               upload_to='images/avatars/',
+                               validators=[
+                                   FileExtensionValidator(
+                                       allowed_extensions=('png', 'jpg', 'webp', 'jpeg', 'gif', 'webp'))]
+                               )
     description = models.TextField(verbose_name='Описание')
     category = TreeForeignKey('Category', on_delete=models.PROTECT,
                               related_name='products', verbose_name='Категория', default=1)
@@ -58,11 +62,12 @@ class Product(models.Model):
         verbose_name = 'Товары'
         verbose_name_plural = 'Товары'
         ordering = ['id']
-        indexes = [models.Index(fields=['name', '-publish', 'status'])] #индексация для ускорения БД
-        db_table = 'product'  #название в БД
+        indexes = [models.Index(fields=['name', '-publish', 'status'])]  # индексация для ускорения БД
+        db_table = 'product'  # название в БД
 
     def __str__(self):
         return self.name
+
 
 class Category(MPTTModel):
     """
@@ -106,6 +111,17 @@ class Category(MPTTModel):
         """
         return reverse('product_by_category', kwargs={'slug': self.slug})
 
+
+class ProductImages(models.Model):
+    product = models.ForeignKey(Product,
+                                blank=True,
+                                null=True, default=None,
+                                on_delete=models.CASCADE,
+                                related_name='images')
+    image = models.ImageField(upload_to='item_images/',
+                              verbose_name='Картинка')
+
+
 @receiver(post_save, sender=Product)
 def product_post_save(sender, instance, signal, *args, **kwargs):
     delay_seconds = 0.1
@@ -121,21 +137,11 @@ def product_post_save(sender, instance, signal, *args, **kwargs):
         print(f"An error occurred: {e}")
 
 
-
-class ProductImages(models.Model):
-    product = models.ForeignKey(Product,
-                                blank=True,
-                                null=True, default=None,
-                                on_delete=models.CASCADE,
-                                related_name='images')
-    image = models.ImageField(upload_to='item_images/',
-                              verbose_name='Картинка')
-
 @receiver(post_save, sender=ProductImages)
 def product_post_save_images(sender, instance, signal, *args, **kwargs):
     delay_seconds = 0.1
     process_image_regular.apply_async(args=[instance.image.url[1:]
-], countdown=delay_seconds)
+                                            ], countdown=delay_seconds)
     abs_image_path = os.path.join(settings.BASE_DIR, instance.image.url[1:])
     try:
         with Image.open(abs_image_path) as img:
@@ -143,10 +149,3 @@ def product_post_save_images(sender, instance, signal, *args, **kwargs):
             new_img.save(abs_image_path)
     except Exception as e:
         print(f"An error occurred: {e}")
-
-
-
-
-
-
-

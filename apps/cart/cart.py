@@ -37,7 +37,7 @@ class Cart(object):
         """
         Считаем сколько товаров в корзине
         """
-        return sum(item['quantity'] for item in self.cart.values())
+        return len(self.cart)
 
     def add(self, product, quantity=1, update_quantity=False):
         """

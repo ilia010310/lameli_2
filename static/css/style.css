@@ -107,3 +107,8 @@ footer {
     background-color: #ffc008;
     color: black;
 }
+
+.navbar .cart-nav {
+    position: absolute;
+    right: 10%;
+}
