@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'apps.order.apps.OrderConfig',
     'django.contrib.sites',
     'django.contrib.sitemaps',
+    'apps.about.apps.AboutConfig',
 ]
 
 MIDDLEWARE = [

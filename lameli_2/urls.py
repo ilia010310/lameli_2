@@ -13,8 +13,7 @@ sitemaps = {
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('about_us/', TemplateView.as_view(template_name='products/about_us.html'),
-            name='about_us'),
+    path('about_us/', include('apps.about.urls', namespace='about')),
     path('cart/', include('apps.cart.urls', namespace='cart')),
     path('order/', include('apps.order.urls', namespace='order')),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
