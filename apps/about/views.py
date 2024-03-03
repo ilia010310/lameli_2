@@ -10,6 +10,7 @@ class AboutUsView(TemplateView):
         context = super().get_context_data(**kwargs)
         cart = Cart(self.request)
         context['cart_count'] = len(cart)
+        context['title'] = 'О компании'
         return context
 
 class ContactsView(TemplateView):
@@ -18,5 +19,6 @@ class ContactsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         cart = Cart(self.request)
+        context['title'] = 'Контакты'
         context['cart_count'] = len(cart)
         return context

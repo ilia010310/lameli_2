@@ -9,8 +9,9 @@ from django.core.mail import send_mail
 
 
 def order(request):
+    cart = len(Cart(request))
     if not Cart(request):
-        return render(request, 'empty_cart.html')
+        return render(request, 'cart/empty_cart.html', {'cart_count': cart})
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
@@ -59,8 +60,8 @@ def order(request):
                       ['theilyaboyarintsev@gmail.com'])
             print(form_data)
             print(Cart(request))
-            return render(request, 'solution.html', {'name': name})
+            return render(request, 'solution.html', {'name': name, 'cart_count': cart})
 
     else:
         form = OrderForm()
-        return render(request, 'order.html', {'form': form})
+        return render(request, 'order.html', {'form': form, 'cart_count': cart})

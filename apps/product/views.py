@@ -17,7 +17,7 @@ class ProductListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Главная страница'
+        context['title'] = 'Mr Vidergold'
         context['cart_item_form'] = self.cart_item_form
         cart = Cart(self.request)
         context['cart_count'] = len(cart)
