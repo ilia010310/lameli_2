@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from apps.cart.cart import Cart
-from django.http import HttpResponse
 from lameli_2 import settings
 from apps.order.forms import OrderForm
 from apps.order.models import Order, ProductsInOrder
@@ -11,7 +10,8 @@ from django.core.mail import send_mail
 def order(request):
     cart = len(Cart(request))
     if not Cart(request):
-        return render(request, 'cart/empty_cart.html', {'cart_count': cart})
+        return render(request, 'cart/empty_cart.html', {'cart_count': cart,
+                                                        'title': 'Упс...'})
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
@@ -23,19 +23,18 @@ def order(request):
             final_order.save()
             products_in_answer = 'Товары: \n\n'
             for product in Cart(request):
-
                 product = Product.objects.get(name=product['product'])
-                quantity = Product['quantity']
+                quantity = product['quantity']
                 price = product['price']
                 total_price = quantity * price
                 products_in_answer += (f'{product.name}\nКоличество: {quantity} шт.\n'
-                                    f'Цена за штуку: {price} руб. \n\n ')
+                                       f'Цена за штуку: {price} руб. \n\n ')
                 final_product_in_order = {'quantity': quantity,
-                                                    'price_per_product': price,
-                                                    'order': final_order,
-                                                    'product': product,
-                                                    'total_price': total_price,
-                                                    }
+                                          'price_per_product': price,
+                                          'order': final_order,
+                                          'product': product,
+                                          'total_price': total_price,
+                                          }
                 one_product_in_total_order = ProductsInOrder(**final_product_in_order)
                 one_product_in_total_order.save()
 
@@ -58,10 +57,12 @@ def order(request):
                       f'Итого: {form_data["total_price"]} руб.'
             send_mail(subject, message, settings.EMAIL_HOST_USER,
                       ['theilyaboyarintsev@gmail.com'])
-            print(form_data)
-            print(Cart(request))
-            return render(request, 'solution.html', {'name': name, 'cart_count': cart})
+            return render(request, 'cart/solution.html', {'name': name,
+                                                          'cart_count': cart,
+                                                          'title': 'Заказ'})
 
     else:
         form = OrderForm()
-        return render(request, 'order.html', {'form': form, 'cart_count': cart})
+        return render(request, 'cart/order.html', {'form': form,
+                                                   'cart_count': cart,
+                                                   'title': 'Заказ'})
