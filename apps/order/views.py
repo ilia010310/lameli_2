@@ -1,10 +1,9 @@
 from django.shortcuts import render
 from apps.cart.cart import Cart
-from lameli_2 import settings
 from apps.order.forms import OrderForm
 from apps.order.models import Order, ProductsInOrder
 from apps.product.models import Product
-from django.core.mail import send_mail
+from .tasks import send_customer_email, send_salesman_email
 
 
 def order(request):
@@ -17,15 +16,16 @@ def order(request):
         if form.is_valid():
             form_data = form.cleaned_data
             form_data['total_price'] = Cart(request).get_total_price()
+            del form_data['recaptcha']
 
             final_order = Order(**form_data)
 
             final_order.save()
             products_in_answer = 'Товары: \n\n'
-            for product in Cart(request):
-                product = Product.objects.get(name=product['product'])
-                quantity = product['quantity']
-                price = product['price']
+            for item in Cart(request):
+                product = Product.objects.get(name=item['product'])
+                quantity = item['quantity']
+                price = item['price']
                 total_price = quantity * price
                 products_in_answer += (f'{product.name}\nКоличество: {quantity} шт.\n'
                                        f'Цена за штуку: {price} руб. \n\n ')
@@ -39,14 +39,8 @@ def order(request):
                 one_product_in_total_order.save()
 
             name = form_data['customer_name']
-
-            subject = f"{name}, спасибо за заказ!"
-            message = f"Ваш заказ уже принят в обработку.\n\n" \
-                      f"Скоро с Вами свяжется наш менеджер."
-            send_mail(subject, message, settings.EMAIL_HOST_USER,
-                      [form_data['customer_email']])
-
-            subject = f"Новый заказ!"
+            recipient = form_data['customer_email']
+            send_customer_email.delay(name, recipient)
 
             message = f"Имя покупателя: {name}.\n\n" \
                       f"Email: {form_data['customer_email']}\n\n" \
@@ -55,14 +49,18 @@ def order(request):
                       f'Комментарий: {form_data["comments"]}\n\n' \
                       f'{products_in_answer}\n\n' \
                       f'Итого: {form_data["total_price"]} руб.'
-            send_mail(subject, message, settings.EMAIL_HOST_USER,
-                      ['theilyaboyarintsev@gmail.com'])
+            send_salesman_email.delay(message)
+            Cart(request).clear()
+
             return render(request, 'cart/solution.html', {'name': name,
                                                           'cart_count': cart,
                                                           'title': 'Заказ'})
-
-    else:
-        form = OrderForm()
-        return render(request, 'cart/order.html', {'form': form,
-                                                   'cart_count': cart,
-                                                   'title': 'Заказ'})
+        else:
+            form_errors = form.errors.as_text()
+            return render(request, 'cart/order.html', {'form': form,
+                                                       'cart_count': cart,
+                                                       'title': 'Заказ', 'form_errors': form_errors})
+    form = OrderForm()
+    return render(request, 'cart/order.html', {'form': form,
+                                               'cart_count': cart,
+                                               'title': 'Заказ'})

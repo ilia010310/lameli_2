@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.sitemaps',
     'apps.about.apps.AboutConfig',
+    'django_recaptcha',
 ]
 
 MIDDLEWARE = [
@@ -143,4 +144,7 @@ REDIS_PORT = '6379'
 BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
 BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
 CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+
+RECAPTCHA_PUBLIC_KEY = '6LfgkogpAAAAAANNSVR7ITtjbaHq1yGbNPwKnJcX'
+RECAPTCHA_PRIVATE_KEY = '6LfgkogpAAAAAJsnI_QLeNpTr2wE-k7yIy4V7Vvm'
 

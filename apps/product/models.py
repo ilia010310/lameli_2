@@ -3,11 +3,9 @@ import os
 from PIL import Image
 from django.core.validators import FileExtensionValidator
 from django.db import models
-from django.db.models import signals
 from django.urls import reverse
 from mptt.models import MPTTModel, TreeForeignKey
 from apps.service.utils import unique_slugify
-from apps.product.tasks import process_image_avatar, process_image_regular
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -124,10 +122,6 @@ class ProductImages(models.Model):
 
 @receiver(post_save, sender=Product)
 def product_post_save(sender, instance, signal, *args, **kwargs):
-    delay_seconds = 0.1
-    print(os.path.exists(os.path.join(settings.BASE_DIR, instance.avatar.url[1:])))
-    process_image_avatar.apply_async(args=[instance.avatar.url[1:]], countdown=delay_seconds)
-
     abs_image_path = os.path.join(settings.BASE_DIR, instance.avatar.url[1:])
     try:
         with Image.open(abs_image_path) as img:
@@ -139,9 +133,6 @@ def product_post_save(sender, instance, signal, *args, **kwargs):
 
 @receiver(post_save, sender=ProductImages)
 def product_post_save_images(sender, instance, signal, *args, **kwargs):
-    delay_seconds = 0.1
-    process_image_regular.apply_async(args=[instance.image.url[1:]
-                                            ], countdown=delay_seconds)
     abs_image_path = os.path.join(settings.BASE_DIR, instance.image.url[1:])
     try:
         with Image.open(abs_image_path) as img:
