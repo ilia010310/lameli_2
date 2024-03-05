@@ -148,3 +148,10 @@ CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
 RECAPTCHA_PUBLIC_KEY = '6LfgkogpAAAAAANNSVR7ITtjbaHq1yGbNPwKnJcX'
 RECAPTCHA_PRIVATE_KEY = '6LfgkogpAAAAAJsnI_QLeNpTr2wE-k7yIy4V7Vvm'
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
+        'LOCATION': '127.0.0.1:11211'
+    }
+}
+

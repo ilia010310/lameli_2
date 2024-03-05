@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.shortcuts import render
 from apps.cart.cart import Cart
 from apps.order.forms import OrderForm
@@ -7,7 +8,7 @@ from .tasks import send_customer_email, send_salesman_email
 
 
 def order(request):
-    cart = len(Cart(request))
+    cart = len(cache.get_or_set('cached_cart', Cart(request)))
     if not Cart(request):
         return render(request, 'cart/empty_cart.html', {'cart_count': cart,
                                                         'title': 'Упс...'})
@@ -51,7 +52,7 @@ def order(request):
                       f'Итого: {form_data["total_price"]} руб.'
             send_salesman_email.delay(message)
             Cart(request).clear()
-
+            cache.delete('cached_cart')
             return render(request, 'cart/solution.html', {'name': name,
                                                           'cart_count': cart,
                                                           'title': 'Заказ'})

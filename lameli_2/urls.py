@@ -11,6 +11,11 @@ sitemaps = {
     'posts': ProductSitemap,
 }
 
+handler403 = 'apps.product.views.tr_handler403'
+handler404 = 'apps.product.views.tr_handler404'
+handler500 = 'apps.product.views.tr_handler500'
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('about_us/', include('apps.about.urls', namespace='about')),

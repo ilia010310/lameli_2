@@ -6,7 +6,7 @@ from django.db import models
 from django.urls import reverse
 from mptt.models import MPTTModel, TreeForeignKey
 from apps.service.utils import unique_slugify
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 
 from lameli_2 import settings
@@ -24,7 +24,7 @@ class ProductManager(models.Manager):
 class Product(models.Model):
     STATUS_OPTIONS = (
         ('YES', 'В наличии'),
-        ('NO', 'Скоро на складе')
+        ('NO', 'Не в наличии')
     )
 
     name = models.CharField(max_length=46, verbose_name='Название')
@@ -140,3 +140,6 @@ def product_post_save_images(sender, instance, signal, *args, **kwargs):
             new_img.save(abs_image_path)
     except Exception as e:
         print(f"An error occurred: {e}")
+
+# @receiver(pre_delete, sender=Product)
+# def pre_delete_cart_item(sender, instance, **kwargs):

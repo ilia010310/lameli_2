@@ -1,4 +1,4 @@
-
+from django.core.cache import cache
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from .cart import Cart
@@ -8,7 +8,7 @@ from ..product.models import Product
 
 @require_POST
 def cart_add(request, product_id):
-    cart = Cart(request)
+    cart = cache.get_or_set('cached_cart', Cart(request))
     product = get_object_or_404(Product, id=product_id)
 
     form = CartAddProductForm(request.POST)
@@ -17,25 +17,32 @@ def cart_add(request, product_id):
         cart.add(product=product,
                  quantity=cd['quantity'],
                  update_quantity=cd['update'])
+    cache.delete('cached_cart')
     return redirect('cart:cart_detail')
 
 
 
 def cart_remove(request, product_id):
-    cart = Cart(request)
+    cart = cache.get_or_set('cached_cart', Cart(request))
     product = get_object_or_404(Product, id=product_id)
     cart.remove(product)
+    cache.delete('cached_cart')
     return redirect('cart:cart_detail')
 
 
 def cart_detail(request):
-    cart = Cart(request)
+    cart = cache.get_or_set('cached_cart', Cart(request))
     title = 'Корзина'
-    cart = Cart(request)
     cart_count = len(cart)
 
     for item in cart:
+        if item['product'].status == 'NO':
+            cart.remove(item['product'])
+            cache.set('cached_cart', cart)
         item['update_quantity_form'] = CartAddProductForm(
             initial={'quantity': item['quantity'], 'update': True,})
+
     return render(request, 'cart/detail.html', {'cart': cart,
                                                 'title': title,  'cart_count': cart_count})
+
+
