@@ -13,19 +13,13 @@ class ProductListView(ListView):
     context_object_name = 'products'
     paginate_by = 12
 
-    def get_queryset(self):
-        cached_product_list = cache.get_or_set(
-            'cached_product_list',
-            Product.custom.all(),
-            timeout=30
-        )
-        return cached_product_list
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Mr Vidergold'
         context['cart_item_form'] = self.cart_item_form
-        cart = cache.get_or_set('cached_cart', Cart(self.request))
+        cart = Cart(self.request)
         context['cart_count'] = len(cart)
 
         return context
@@ -42,7 +36,7 @@ class ProductDetailView(DetailView):
         context['title'] = self.object.name
         context['cart_item_form'] = self.cart_item_form
         context['images'] = self.object.images.all()
-        cart = cache.get_or_set('cached_cart', Cart(self.request))
+        cart = Cart(self.request)
         context['cart_count'] = len(cart)
         return context
 
@@ -72,7 +66,7 @@ class ProductFromCategory(ListView):
         context = super().get_context_data(**kwargs)
         context['title'] = f'Категория: {self.category.title}'
         context['cart_item_form'] = self.cart_item_form
-        cart = cache.get_or_set('cached_cart', Cart(self.request))
+        cart = Cart(self.request)
         context['cart_count'] = len(cart)
         return context
 

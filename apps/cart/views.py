@@ -8,8 +8,9 @@ from ..product.models import Product
 
 @require_POST
 def cart_add(request, product_id):
-    cart = cache.get_or_set('cached_cart', Cart(request))
+    cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
+
 
     form = CartAddProductForm(request.POST)
     if form.is_valid():
@@ -17,21 +18,22 @@ def cart_add(request, product_id):
         cart.add(product=product,
                  quantity=cd['quantity'],
                  update_quantity=cd['update'])
+
     cache.delete('cached_cart')
     return redirect('cart:cart_detail')
 
 
 
 def cart_remove(request, product_id):
-    cart = cache.get_or_set('cached_cart', Cart(request))
+    cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     cart.remove(product)
-    cache.delete('cached_cart')
+
     return redirect('cart:cart_detail')
 
 
 def cart_detail(request):
-    cart = cache.get_or_set('cached_cart', Cart(request))
+    cart = Cart(request)
     title = 'Корзина'
     cart_count = len(cart)
 

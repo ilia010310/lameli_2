@@ -20,6 +20,6 @@ def send_salesman_email(message):
         subject = f"Новый заказ!"
 
         send_mail(subject, message, settings.EMAIL_HOST_USER,
-                  ['theilyaboyarintsev@gmail.com'])
+                  ['v9127165074@gmail.com'])
     except Exception as e:
         print(f"An error occurred: {e}")
