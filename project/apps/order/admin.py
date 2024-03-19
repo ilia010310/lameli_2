@@ -21,5 +21,6 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ['id', 'total_price', 'customer_name', 'customer_email',
                     'customer_inn', 'status', 'created', 'updated' ]
     ordering = ['status']
+    list_editable = ['status']
     inlines = [ProductsInOrderInline]
 
