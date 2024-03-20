@@ -1,17 +1,15 @@
-FROM python:3.12.0-alpine
+FROM python:3.12.0
 
 
-WORKDIR /app
+
+
+WORKDIR /backend
 
 ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
 
 RUN pip install --upgrade pip
-COPY requirements.txt /app
+COPY ./requirements.txt /backend
 RUN pip install -r requirements.txt
 
-COPY . /app
+COPY . /backend
 
-EXPOSE 8000
-
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

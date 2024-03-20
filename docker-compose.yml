@@ -1,0 +1,91 @@
+version: '3.9'
+services:
+  db:
+    container_name: db-dev
+    restart: always
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    image: postgres:15-alpine
+    volumes:
+      - db_dev:/var/lib/postgresql/data
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    command: -p ${DB_PORT}
+
+  celery-worker:
+    restart: always
+    build:
+      context: ./project
+      dockerfile: Dockerfile
+    env_file:
+      .env
+    command: "celery -A apps.product worker"
+    volumes:
+      - ./project:/backend
+    depends_on:
+      - backend
+#
+#  celery-beat:
+#    restart: always
+#    build:
+#      context: ../haccp_backend
+#      dockerfile: Dockerfile
+#    env_file:
+#      .env.dev
+#    command: "celery -A core beat"
+#    volumes:
+#      - ../haccp_backend:/backend
+#    depends_on:
+#      - backend
+#
+  redis:
+    restart: always
+    image: bitnami/redis:6.0
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_PORT_NUMBER=${REDIS_PORT}
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+
+  backend:
+    container_name: backend-dev
+    ports:
+      - ${BACKEND_PORT}:${BACKEND_PORT}
+    build:
+      context: ./project
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    restart: always
+    command: "sh ./entrypoint.sh"
+    volumes:
+      - ./project/entrypoint.sh:/backend/entrypoint.sh
+      - ./project:/backend
+      - staticfiles_dev:/backend/static/
+      - media_dev:/backend/media/
+    depends_on:
+      - db
+
+  nginx:
+    image: nginx:1.19.3
+    container_name: nginx-dev
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - ${NGINX_PORT}:${NGINX_PORT}
+    volumes:
+      - ./nginx.conf:/etc/nginx/templates/default.conf.template
+      - staticfiles_dev:/backend/static/
+      - media_dev:/backend/media/
+
+
+
+volumes:
+  staticfiles_dev:
+  media_dev:
+  db_dev:
