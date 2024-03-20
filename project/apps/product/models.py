@@ -27,18 +27,34 @@ class Product(models.Model):
 
     name = models.CharField(max_length=46, verbose_name='Название')
     slug = models.SlugField(verbose_name='Артикул', max_length=255, blank=True)
-    avatar = models.ImageField(default='default.png',
-                               verbose_name='Главная фотография',
-                               upload_to='images/avatars/',
-                               validators=[
-                                   FileExtensionValidator(
-                                       allowed_extensions=('png', 'jpg', 'webp', 'jpeg', 'gif', 'webp'))]
-                               )
+    avatar = models.ImageField(
+        default='default.png',
+        verbose_name='Главная фотография',
+        upload_to='images/avatars/',
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=('png', 'jpg', 'webp', 'jpeg', 'gif', 'webp'))]
+    )
     description = models.TextField(verbose_name='Описание')
-    category = TreeForeignKey('Category', on_delete=models.PROTECT,
-                              related_name='products', verbose_name='Категория', default=1)
-    status = models.CharField(choices=STATUS_OPTIONS, default='YES', verbose_name='Статус товара', max_length=10)
-    price = models.DecimalField(default=1990, verbose_name='Цена', decimal_places=0, max_digits=8)
+    category = TreeForeignKey(
+        'Category',
+        on_delete=models.PROTECT,
+        related_name='products',
+        verbose_name='Категория',
+        default=1
+    )
+    status = models.CharField(
+        choices=STATUS_OPTIONS,
+        default='YES',
+        verbose_name='Статус товара',
+        max_length=10
+    )
+    price = models.DecimalField(
+        default=1990,
+        verbose_name='Цена',
+        decimal_places=0,
+        max_digits=8
+    )
     publish = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
     objects = models.Manager()
@@ -139,5 +155,4 @@ def product_post_save_images(sender, instance, signal, *args, **kwargs):
     except Exception as e:
         print(f"An error occurred: {e}")
 
-# @receiver(pre_delete, sender=Product)
-# def pre_delete_cart_item(sender, instance, **kwargs):
+

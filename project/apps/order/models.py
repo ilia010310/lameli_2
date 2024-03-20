@@ -15,17 +15,38 @@ class Status(models.Model):
     class Meta:
         verbose_name = 'Статус'
         verbose_name_plural = 'Статусы'
+
+
 class Order(models.Model):
-    total_price = models.DecimalField(max_digits=10, decimal_places=0,
-                                      default=0, blank=True, null=True,
-                                      verbose_name='Общая стоимость')
-    customer_name = models.CharField(max_length=80, verbose_name='Имя')
+    total_price = models.DecimalField(
+        max_digits=10, decimal_places=0,
+        default=0, blank=True, null=True,
+        verbose_name='Общая стоимость'
+    )
+    customer_name = models.CharField(
+        max_length=80,
+        verbose_name='Имя'
+    )
     customer_email = models.EmailField(verbose_name='Почта')
     customer_phone = models.CharField(max_length=12, verbose_name='Телефон')
-    customer_inn = models.CharField(max_length=12, blank=True, null=True,
-                                    default=None, verbose_name='ИНН')
-    comments = models.TextField(blank=True, null=True, default=None, verbose_name='Комментарий')
-    status = models.ForeignKey(Status, on_delete=models.CASCADE, default=1, verbose_name='Статус')
+    customer_inn = models.CharField(
+        max_length=12,
+        blank=True,
+        null=True,
+        default=None, verbose_name='ИНН'
+    )
+    comments = models.TextField(
+        blank=True,
+        null=True,
+        default=None,
+        verbose_name='Комментарий'
+    )
+    status = models.ForeignKey(
+        Status,
+        on_delete=models.CASCADE,
+        default=1,
+        verbose_name='Статус'
+    )
     created = models.DateTimeField(auto_now_add=True, verbose_name='Создано')
     updated = models.DateTimeField(auto_now=True, verbose_name='Обновлено')
 
@@ -36,15 +57,32 @@ class Order(models.Model):
         verbose_name = 'Заказ'
         verbose_name_plural = 'Заказы'
 
+
 class ProductsInOrder(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='orders',
-                              verbose_name='Заказ №')
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Товар')
+    order = models.ForeignKey(
+        Order,
+        on_delete=models.CASCADE,
+        related_name='orders',
+        verbose_name='Заказ №'
+    )
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        verbose_name='Товар'
+    )
     quantity = models.PositiveIntegerField(default=1, verbose_name='Количество')
-    price_per_product = models.DecimalField(max_digits=10, decimal_places=0, default=0,
-                                         verbose_name='Цена за штуку')
-    total_price = models.DecimalField(max_digits=10, decimal_places=0, default=0,
-                                      verbose_name='Общая стоимость')
+    price_per_product = models.DecimalField(
+        max_digits=10,
+        decimal_places=0,
+        default=0,
+        verbose_name='Цена за штуку'
+    )
+    total_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=0,
+        default=0,
+        verbose_name='Общая стоимость'
+    )
     is_active = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True, verbose_name='Создано')
     updated = models.DateTimeField(auto_now=True, verbose_name='Обновлено')
@@ -63,6 +101,7 @@ class ProductsInOrder(models.Model):
 
         super(ProductsInOrder, self).save(*args, **kwargs)
 
+
 def product_in_order_post_save(sender, instance, created, **kwargs):
     order = instance.order
     all_products_in_order = ProductsInOrder.objects.filter(order=order, is_active=True)
@@ -74,5 +113,5 @@ def product_in_order_post_save(sender, instance, created, **kwargs):
     instance.order.total_price = order_total_price
     instance.order.save(force_update=True)
 
-post_save.connect(product_in_order_post_save, sender=ProductsInOrder)
 
+post_save.connect(product_in_order_post_save, sender=ProductsInOrder)
