@@ -85,6 +85,7 @@ def tr_handler500(request):
     """
     Обработка ошибки 500
     """
+
     return render(request=request, template_name='errors/error_page.html', status=500, context={
         'title': 'Ошибка сервера: 500',
         'error_message': 'Внутренняя ошибка сайта, вернитесь на главную страницу, отчет об ошибке мы направим администрации сайта',
