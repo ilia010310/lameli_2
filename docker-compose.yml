@@ -35,7 +35,7 @@ services:
 #      context: ../haccp_backend
 #      dockerfile: Dockerfile
 #    env_file:
-#      .env.dev
+#      ..env.dev
 #    command: "celery -A core beat"
 #    volumes:
 #      - ../haccp_backend:/backend
@@ -53,8 +53,6 @@ services:
 
   backend:
     container_name: backend-dev
-    ports:
-      - ${BACKEND_PORT}:${BACKEND_PORT}
     build:
       context: ./project
       dockerfile: Dockerfile
