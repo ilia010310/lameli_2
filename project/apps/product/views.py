@@ -1,9 +1,13 @@
+import logging
+
 from django.core.cache import cache
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView, DetailView
 from .models import Product, Category
 from ..cart.cart import Cart
 from ..cart.forms import CartAddProductForm
+
+logger = logging.getLogger(__name__)
 
 
 class ProductListView(ListView):
@@ -12,8 +16,6 @@ class ProductListView(ListView):
     template_name = 'products/products_list.html'
     context_object_name = 'products'
     paginate_by = 12
-
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -75,6 +77,7 @@ def tr_handler404(request, exception):
     """
     Обработка ошибки 404
     """
+    logger.warning('Кто то переходит на несуществующую страницу')
     return render(request=request, template_name='errors/error_page.html', status=404, context={
         'title': 'Страница не найдена: 404',
         'error_message': 'К сожалению такая страница была не найдена, или перемещена',
@@ -85,10 +88,11 @@ def tr_handler500(request):
     """
     Обработка ошибки 500
     """
-
+    logger.error('Ошибка на сервере')
     return render(request=request, template_name='errors/error_page.html', status=500, context={
         'title': 'Ошибка сервера: 500',
-        'error_message': 'Внутренняя ошибка сайта, вернитесь на главную страницу, отчет об ошибке мы направим администрации сайта',
+        'error_message':
+            'Внутренняя ошибка сайта, вернитесь на главную страницу, отчет об ошибке мы направим администрации сайта',
     })
 
 
@@ -96,6 +100,7 @@ def tr_handler403(request, exception):
     """
     Обработка ошибки 403
     """
+    logger.error('Ошибка доступа: 403')
     return render(request=request, template_name='errors/error_page.html', status=403, context={
         'title': 'Ошибка доступа: 403',
         'error_message': 'Доступ к этой странице ограничен',

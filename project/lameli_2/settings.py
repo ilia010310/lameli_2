@@ -154,3 +154,41 @@ CACHES = {
         'LOCATION': str(os.getenv('CACHES_LOCATION')),
     }
 }
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+
+    'formatters':
+        {
+            'console': {
+                'format': "{asctime} - {levelname} - {module} - {filename} - {message}",
+                'style': "{",
+
+            },
+            'file': {
+                'format': "{asctime} - {levelname} - {module} - {filename} - {message}",
+                'style': "{",
+
+            },
+
+        },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "console"
+        },
+        "file": {
+            "class": "logging.FileHandler",
+            "formatter": "console",
+            "filename": "info_logs.log",
+        }
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console", "file"],
+            "level": 'WARNING',
+            "propagate": False,
+        },
+    },
+}

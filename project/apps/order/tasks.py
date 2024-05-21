@@ -1,6 +1,10 @@
+import logging
+
 from django.core.mail import send_mail
 from apps.product.celery import app
 from lameli_2 import settings
+
+logger = logging.getLogger(__name__)
 
 
 @app.task
@@ -12,7 +16,8 @@ def send_customer_email(name, recipient):
         send_mail(subject, message, settings.EMAIL_HOST_USER,
                   [recipient])
     except Exception as e:
-        print(f"An error occurred: {e}")
+        logger.warning('Отправка сообщения покупателю не удалась')
+
 
 @app.task
 def send_salesman_email(message):
@@ -22,4 +27,4 @@ def send_salesman_email(message):
         send_mail(subject, message, settings.EMAIL_HOST_USER,
                   ['v9127165074@gmail.com'])
     except Exception as e:
-        print(f"An error occurred: {e}")
+        logger.warning('Отправка сообщения продавцу не удалась')
