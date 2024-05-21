@@ -3,8 +3,8 @@ services:
   db:
     container_name: db-dev
     restart: always
-    #ports:
-     # - ${DB_PORT}:${DB_PORT}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
     image: postgres:15-alpine
     volumes:
       - db_dev:/var/lib/postgresql/data
@@ -28,18 +28,33 @@ services:
       - ./project:/backend
     depends_on:
       - backend
-
+#
+#  celery-beat:
+#    restart: always
+#    build:
+#      context: ../haccp_backend
+#      dockerfile: Dockerfile
+#    env_file:
+#      .env.dev
+#    command: "celery -A core beat"
+#    volumes:
+#      - ../haccp_backend:/backend
+#    depends_on:
+#      - backend
+#
   redis:
     restart: always
-    image: bitnami/redis:latest
-    env_file:
-      - .env
+    image: bitnami/redis:6.0
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
-      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_PORT_NUMBER=${REDIS_PORT}
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
 
   backend:
     container_name: backend-dev
+    ports:
+      - ${BACKEND_PORT}:${BACKEND_PORT}
     build:
       context: ./project
       dockerfile: Dockerfile
@@ -56,7 +71,7 @@ services:
       - db
 
   nginx:
-    image: nginx:1.25.4
+    image: nginx:1.19.3
     container_name: nginx-dev
     restart: always
     env_file:
@@ -67,6 +82,8 @@ services:
       - ./nginx.conf:/etc/nginx/templates/default.conf.template
       - staticfiles_dev:/backend/static/
       - media_dev:/backend/media/
+
+
 
 volumes:
   staticfiles_dev:

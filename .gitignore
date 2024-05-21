@@ -1,0 +1,15 @@
+.idea
+idea
+.DS_Store
+.env.dev
+.venv
+.env
+
+Makefile
+
+dist
+db.sqlite3
+sqlite.db
+venv
+
+*.pyc
