@@ -154,5 +154,3 @@ def product_post_save_images(sender, instance, signal, *args, **kwargs):
             new_img.save(abs_image_path)
     except Exception as e:
         print(f"An error occurred: {e}")
-
-
